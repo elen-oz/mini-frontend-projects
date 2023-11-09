@@ -82,14 +82,57 @@ const drawBricks = () => {
   });
 };
 
+const movePaddle = () => {
+  paddle.x += paddle.dx;
+  if (paddle.x + paddle.w > canvasEl.width) {
+    paddle.x = canvasEl.width - paddle.w;
+  }
+
+  if (paddle.x < 0) {
+    paddle.x = 0;
+  }
+};
+
 const draw = () => {
+  ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+
   drawBall();
   drawPaddle();
   drawScore();
   drawBricks();
 };
 
-draw();
+const update = () => {
+  movePaddle();
+
+  draw();
+
+  requestAnimationFrame(update);
+};
+
+update();
+
+const keyDown = (e) => {
+  if (e.key === 'Right' || e.key === 'ArrowRight') {
+    paddle.dx = paddle.speed;
+  } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+    paddle.dx = -paddle.speed;
+  }
+};
+
+const keyUp = (e) => {
+  if (
+    e.key === 'Right' ||
+    e.key === 'ArrowRight' ||
+    e.key === 'Left' ||
+    e.key === 'ArrowLeft'
+  ) {
+    paddle.dx = 0;
+  }
+};
+
+document.addEventListener('keydown', keyDown);
+document.addEventListener('keyup', keyUp);
 
 rulesBtn.addEventListener('click', () => {
   rulesEl.classList.add('show');
