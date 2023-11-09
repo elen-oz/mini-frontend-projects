@@ -65,8 +65,7 @@ const drawPaddle = () => {
 };
 
 const drawScore = () => {
-  // ctx.font= '1.5rem Arial';
-  ctx.font = '1.5rem Courier';
+  ctx.font = '18px Courier';
   ctx.fillText(`Score: ${score}`, canvasEl.width - 100, 30);
 };
 
@@ -124,9 +123,31 @@ const moveBall = () => {
           ball.dy *= -1;
           brick.visible = false;
 
-          // increaseScore();
+          increaseScore();
         }
       }
+    });
+  });
+
+  if (ball.y + ball.size > canvasEl.height) {
+    showAllBricks();
+    score = 0;
+  }
+};
+
+const increaseScore = () => {
+  score += 1;
+
+  if (score % (brickRowCount * brickRowCount) === 0) {
+    showAllBricks();
+  }
+};
+console.log('score ', score);
+
+const showAllBricks = () => {
+  bricks.forEach((column) => {
+    column.forEach((brick) => {
+      brick.visible = true;
     });
   });
 };
